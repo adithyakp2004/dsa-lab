@@ -1,0 +1,48 @@
+1. Infix to Postfix (Using Stack)
+#include<stdio.h>
+#include<ctype.h>
+
+char s[20];
+int top=-1;
+
+void push(char c){ s[++top]=c; }
+char pop(){ return s[top--]; }
+
+int prec(char c){
+    if(c=='+'||c=='-') return 1;
+    if(c=='*'||c=='/') return 2;
+    return 0;
+}
+
+int main(){
+    char in[20],post[20];
+    int i,j=0;
+
+    printf("Infix: ");
+    scanf("%s",in);
+
+    for(i=0;in[i];i++){
+        char c=in[i];
+
+        if(isalnum(c))
+            post[j++]=c;
+        else if(c=='(')
+            push(c);
+        else if(c==')'){
+            while(s[top]!='(')
+                post[j++]=pop();
+            pop();
+        }
+        else{
+            while(top!=-1 && prec(s[top])>=prec(c))
+                post[j++]=pop();
+            push(c);
+        }
+    }
+
+    while(top!=-1)
+        post[j++]=pop();
+
+    post[j]='\0';
+    printf("Postfix=%s",post);
+}
