@@ -1,0 +1,71 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+struct node{
+    int data;
+    struct node *next;
+};
+
+struct node *head=NULL,*p,*temp;
+int x;
+
+void display(){
+    p=head;
+    while(p){
+        printf("%d ",p->data);
+        p=p->next;
+    }
+}
+
+void insert(){
+    temp=malloc(sizeof(struct node));
+    scanf("%d",&x);
+    temp->data=x;
+    temp->next=head;
+    head=temp;
+}
+
+void delbeg(){
+    if(head){
+        temp=head;
+        head=head->next;
+        free(temp);
+    }
+}
+
+void delend(){
+    p=head;
+    while(p->next->next)
+        p=p->next;
+    free(p->next);
+    p->next=NULL;
+}
+
+void delval(){
+    scanf("%d",&x);
+    p=head;
+    while(p->next && p->next->data!=x)
+        p=p->next;
+    if(p->next){
+        temp=p->next;
+        p->next=temp->next;
+        free(temp);
+    }
+}
+
+int main(){
+    int ch;
+    while(1){
+        printf("\n1.Insert 2.Display 3.DelBeg 4.DelEnd 5.DelVal 6.Exit\n");
+        scanf("%d",&ch);
+
+        switch(ch){
+            case 1: insert(); break;
+            case 2: display(); break;
+            case 3: delbeg(); break;
+            case 4: delend(); break;
+            case 5: delval(); break;
+            case 6: return 0;
+        }
+    }
+}
